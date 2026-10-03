@@ -1,6 +1,7 @@
 # Toy Robot Simulator
 
-A Ruby command-line application that moves a toy robot around a 5 x 5 table.
+A Ruby command-line application that moves a toy robot around a table
+(5 x 5 by default).
 It reads `PLACE`, `MOVE`, `LEFT`, `RIGHT` and `REPORT` commands from a file or
 standard input. The robot never falls off the table.
 
@@ -44,8 +45,20 @@ bin/toy_robot < examples/b_rotation.txt
 
 printf 'PLACE 0,0,NORTH\nMOVE\nREPORT\n' | bin/toy_robot
 
+bin/toy_robot --size 7x3 examples/a_basic_movement.txt
+
 bin/toy_robot --help
 ```
+
+### Options
+
+| Option | Effect |
+| --- | --- |
+| `-s`, `--size WIDTHxHEIGHT` | Table size. Defaults to `5x5`. Both numbers must be at least 1. |
+| `-h`, `--help` | Show usage. |
+
+Options can come before or after the file. A bad option or size prints the
+reason and the usage on stderr, and exits with status 1.
 
 Each `REPORT` prints one line, `X,Y,F`. A missing file prints an error on
 stderr and exits with status 1.
@@ -67,7 +80,7 @@ ignored. Lines that are not commands are skipped.
 ## Testing
 
 ```bash
-bundle exec rspec       # 119 examples, 100% line coverage enforced
+bundle exec rspec       # 137 examples, 100% line coverage enforced
 bundle exec rubocop     # lint
 bundle exec rubycritic  # optional quality report, opens in a browser
 ```
@@ -133,7 +146,7 @@ All code is under `lib/toy_robot/`, one concept per file.
 | `Commands::*` | One class per instruction: `Place`, `Move`, `Left`, `Right`, `Report`. |
 | `Parser` | Text to command object. Returns nil for anything it does not understand. |
 | `Simulator` | Runs lines in order and holds the "discard until placed" rule. |
-| `CLI` | Chooses file or stdin, handles `--help` and errors, returns an exit status. |
+| `CLI` | Parses options (`--size`, `--help`), chooses file or stdin, reports errors, returns an exit status. |
 
 ### Design patterns, and why
 
@@ -199,10 +212,10 @@ how the design was built.
 
 ## Assumptions
 
-- **Table size is 5 x 5.** The brief we received is pages 2 and 3 of 3. Page 1,
-  which probably states the size, was not in the PDF. 5 x 5 is the traditional
-  size for this exercise, and all three example scenarios fit inside it. The
-  size is a `Table` constructor argument, so changing it is a one-line edit.
+- **Table size defaults to 5 x 5.** The brief we received is pages 2 and 3 of
+  3. Page 1, which probably states the size, was not in the PDF. 5 x 5 is the
+  traditional size for this exercise, and all three example scenarios fit
+  inside it. Any other size can be passed with `--size WIDTHxHEIGHT`.
 - **Invalid input is ignored silently**, matching "any move that would cause
   the robot to fall must be ignored" and "discard all commands" in the brief.
   Nothing is written to stderr for skipped lines, so stdout and stderr stay
@@ -215,8 +228,7 @@ how the design was built.
 
 ## Future improvements
 
-- **Confirm the table size** against page 1 of the brief, and expose it as a
-  CLI option (`--size 5x5`) if it ever needs to change at runtime.
+- **Confirm the default table size** against page 1 of the brief.
 - **Optional diagnostics.** A `--verbose` flag that writes skipped lines and
   ignored moves to stderr, with line numbers, to help someone debug a command
   file. Keep stdout unchanged.
