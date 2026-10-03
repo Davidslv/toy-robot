@@ -14,6 +14,7 @@ require_relative 'toy_robot/commands/right'
 require_relative 'toy_robot/commands/report'
 require_relative 'toy_robot/parser'
 require_relative 'toy_robot/simulator'
+require_relative 'toy_robot/cli'
 
 module ToyRobot
 end
