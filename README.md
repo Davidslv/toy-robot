@@ -198,8 +198,12 @@ How this maps to SOLID:
 
 ### Code quality notes
 
-RuboCop reports no offenses. RubyCritic rates every file A. Reek raises a few
-warnings that come from deliberate choices:
+RuboCop reports no offenses. RubyCritic rates every file A except
+`lib/toy_robot/cli.rb`, which is B. Its smells come from the `OptionParser`
+setup block (many `parser.` calls, two `separator('')` lines). Moving option
+definitions into their own small class would bring it back to A.
+
+Reek also raises a few warnings that come from deliberate choices:
 
 - *UtilityFunction* on the commands: stateless command objects are the point
   of the pattern.
