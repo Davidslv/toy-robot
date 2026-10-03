@@ -23,6 +23,10 @@ AllCops:
     - Brewfile
     - 'bin/**/*'
     - 'spec/**/*'
+    - 'tmp/**/*'
+    # CI installs gems here (setup-ruby bundler-cache). Listing Exclude
+    # replaces RuboCop's defaults, so vendor must be named explicitly.
+    - 'vendor/**/*'
 
 # the only reason you should uncomment this
 # when dealing with x and y coordinates, and that makes sense
