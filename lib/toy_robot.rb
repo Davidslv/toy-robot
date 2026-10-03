@@ -4,6 +4,7 @@
 # Each file below holds one concept; see README.md for how they fit together.
 require_relative 'toy_robot/direction'
 require_relative 'toy_robot/position'
+require_relative 'toy_robot/table'
 
 module ToyRobot
 end
