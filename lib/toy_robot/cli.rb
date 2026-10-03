@@ -14,6 +14,9 @@ module ToyRobot
 
     SIZE_FORMAT = /\A(?<width>\d+)x(?<height>\d+)\z/
 
+    # Exit status after Ctrl-C: 128 + 2 (SIGINT), the shell convention.
+    INTERRUPTED = 130
+
     def initialize(argv:, stdin:, stdout:, stderr:)
       @argv = argv
       @stdin = stdin
@@ -32,6 +35,10 @@ module ToyRobot
     rescue OptionParser::ParseError, UsageError => e
       @stderr.puts("toy_robot: #{e.message}")
       usage(@stderr, status: 1)
+    rescue Interrupt
+      # Ctrl-C: stop quietly. The newline keeps the shell prompt off the ^C line.
+      @stderr.puts
+      INTERRUPTED
     end
 
     private

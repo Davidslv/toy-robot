@@ -103,4 +103,33 @@ RSpec.describe ToyRobot::CLI do
     expect(run('--speed', '2')).to eq(1)
     expect(stderr.string).to include('invalid option: --speed').and include('Usage:')
   end
+
+  describe 'Ctrl-C' do
+    # Ruby turns Ctrl-C (SIGINT) into an Interrupt exception raised wherever
+    # the program is, usually while waiting for the next line of input.
+    before do
+      lines = Enumerator.new do |yielder|
+        yielder << "PLACE 0,0,NORTH\n"
+        yielder << "REPORT\n"
+        raise Interrupt
+      end
+      allow(stdin).to receive(:each_line).and_return(lines)
+    end
+
+    it 'exits with status 130, the shell convention for Ctrl-C' do
+      expect(run).to eq(130)
+    end
+
+    it 'keeps the reports printed before the interrupt' do
+      run
+
+      expect(stdout.string).to eq("0,0,NORTH\n")
+    end
+
+    it 'prints no stack trace, only a newline so the shell prompt starts on a fresh line' do
+      run
+
+      expect(stderr.string).to eq("\n")
+    end
+  end
 end
