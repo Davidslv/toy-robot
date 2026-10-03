@@ -63,6 +63,10 @@ reason and the usage on stderr, and exits with status 1.
 Each `REPORT` prints one line, `X,Y,F`. A missing file prints an error on
 stderr and exits with status 1.
 
+With no file, it reads what you type, one command per line. There is no
+prompt. Press Ctrl-D to finish (exit 0) or Ctrl-C to stop (exit 130, no
+stack trace).
+
 ### Commands
 
 | Command       | Effect                                                                 |
