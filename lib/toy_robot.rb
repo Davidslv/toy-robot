@@ -11,6 +11,7 @@ require_relative 'toy_robot/commands/place'
 require_relative 'toy_robot/commands/move'
 require_relative 'toy_robot/commands/left'
 require_relative 'toy_robot/commands/right'
+require_relative 'toy_robot/commands/report'
 
 module ToyRobot
 end
