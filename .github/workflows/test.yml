@@ -1,4 +1,4 @@
-name: My workflow
+name: Test
 on: [push, pull_request]
 jobs:
   test:
@@ -6,17 +6,15 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        ruby: [head, 3.3.5, 3.2.2]
+        ruby: ['4.0', '3.4']
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v5
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-        bundler-cache: false # runs 'bundle install' and caches installed gems automatically
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-    - name: Install dependencies
-      run: bundle install
     - name: Rubocop (Linter)
       run: bundle exec rubocop
     - name: Run tests

@@ -3,10 +3,6 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-# ostruct was loaded from the standard library,
-# but will no longer be part of the default gems starting from Ruby 3.5.0
-gem 'ostruct'
-
 group :development, :test do
   gem 'pry'
   gem 'rubocop', require: false
