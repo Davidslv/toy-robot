@@ -11,7 +11,19 @@ module ToyRobot
   # Returning nil (instead of raising) lets the simulator skip bad lines
   # and carry on, which is what the brief asks for.
   class Parser
-    PLACE = /\APLACE (?<x>-?\d+),\s*(?<y>-?\d+),\s*(?<facing>[A-Z]+)\z/
+    # Matches "PLACE X,Y,F", e.g. "PLACE 1,2,EAST" or "PLACE 1, 2, EAST".
+    # The x flag ignores whitespace in the pattern and allows comments, so a
+    # literal space has to be written as [ ].
+    PLACE = /
+      \A                    # start of the line
+      PLACE[ ]              # the keyword and exactly one space
+      (?<x>-?\d+)           # x: whole number, may be negative (the table rejects it later)
+      ,\s*                  # comma, optional spaces
+      (?<y>-?\d+)           # y: same as x
+      ,\s*                  # comma, optional spaces
+      (?<facing>[A-Z]+)     # heading in capitals; Direction.find checks it is a real one
+      \z                    # end of the line, nothing extra allowed
+    /x
 
     SIMPLE_COMMANDS = {
       'MOVE' => Commands::Move,
