@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe ToyRobot::Table do
-  def position(x, y)
-    ToyRobot::Position.new(x: x, y: y)
-  end
-
   describe '#contains?' do
     subject(:table) { described_class.new(width: 5, height: 5) }
 
