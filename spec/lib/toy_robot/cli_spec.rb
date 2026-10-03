@@ -12,7 +12,7 @@ RSpec.describe ToyRobot::CLI do
   end
 
   it 'reads commands from a file given as the argument' do
-    status = run(File.join(__dir__, '../../fixtures/scenario_a.txt'))
+    status = run(File.expand_path('../../../examples/a_basic_movement.txt', __dir__))
 
     expect(stdout.string).to eq("0,1,NORTH\n")
     expect(status).to eq(0)
