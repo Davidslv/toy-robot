@@ -5,7 +5,8 @@ A Ruby command-line application that moves a toy robot around a table
 It reads `PLACE`, `MOVE`, `LEFT`, `RIGHT` and `REPORT` commands from a file or
 standard input. The robot never falls off the table.
 
-The full brief is in [docs/brief.md](docs/brief.md).
+The full brief is in [docs/brief.md](docs/brief.md). A topic-by-topic tour of
+the code is in [docs/walkthrough.md](docs/walkthrough.md).
 
 ```
 $ bin/toy_robot examples/c_complex_sequence.txt
@@ -266,4 +267,5 @@ spec/acceptance/           runs bin/toy_robot against examples/
 spec/support/              shared spec helpers
 examples/                  test data: NAME.txt + NAME.expected
 docs/brief.md              the assessment brief, verbatim
+docs/walkthrough.md        guided tour of the code, one topic at a time
 ```
