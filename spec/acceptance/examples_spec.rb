@@ -30,4 +30,11 @@ RSpec.describe 'bin/toy_robot', :acceptance do
       expect([stdout, stderr, status.exitstatus]).to eq([expected, '', 0])
     end
   end
+
+  it 'honours --size for a table other than 5 x 5' do
+    commands = "PLACE 9,0,EAST\nMOVE\nREPORT\n"
+    stdout, stderr, status = Open3.capture3(RbConfig.ruby, executable, '--size', '10x1', stdin_data: commands)
+
+    expect([stdout, stderr, status.exitstatus]).to eq(["9,0,EAST\n", '', 0])
+  end
 end
