@@ -180,44 +180,6 @@ All code is under `lib/toy_robot/`, one concept per file.
   `command.requires_robot?` and never checks `is_a?(Place)`. Any future command
   that can place the robot needs no simulator change.
 
-How this maps to SOLID:
-
-- **S:** each class above has one reason to change.
-- **O:** new commands extend the system without editing existing ones.
-- **L:** every command is interchangeable behind the same `call` signature.
-- **I:** commands take keyword arguments and ignore the ones they do not need
-  (`**`), so `Left` never has to mention the table.
-- **D:** `Report` writes to whatever output it is given, never to `$stdout`
-  directly.
-
-### Patterns deliberately not used
-
-- **State pattern for "not yet placed".** There are two states and one rule.
-  A nil check in `Simulator` is easier to read than two state classes.
-- **Singletons and global configuration.** The table size is a constructor
-  argument, so tests can change it without touching globals.
-
-### Code quality notes
-
-RuboCop reports no offenses. RubyCritic rates every file A except
-`lib/toy_robot/cli.rb`, which is B. Its smells come from the `OptionParser`
-setup block (many `parser.` calls, two `separator('')` lines). Moving option
-definitions into their own small class would bring it back to A.
-
-Reek also raises a few warnings that come from deliberate choices:
-
-- *UtilityFunction* on the commands: stateless command objects are the point
-  of the pattern.
-- *UnusedParameters* on `Command#call`: it is the abstract signature, and it
-  raises.
-- *FeatureEnvy* on `Parser#parse_place`: it reads fields from a regex match,
-  which is its job.
-
-### Working method
-
-The work was done test-first, one class per commit, with each commit message
-explaining the decision behind it. `git log --reverse` reads as a narrative of
-how the design was built.
 
 ## Assumptions
 
@@ -251,9 +213,7 @@ how the design was built.
   branch, beyond the 100% line coverage they already reach.
 - **Package as a gem** with an executable, if it needed to be installed rather
   than run from the repository.
-- **Obstacles or several robots**, if the exercise grew. `Table#contains?`
-  would become the place to ask "is this square free?", and the Simulator would
-  hold several robots. The command interface would not need to change.
+
 
 ## Project layout
 
